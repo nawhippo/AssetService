@@ -1,0 +1,15 @@
+
+spring:
+  application:
+    name: licensing-service
+  profiles:
+    active: dev
+  config:
+    import: configserver:http://localhost:8071
+
+logging:
+  level:
+    web: debug
+
+server:
+  port: 8090
