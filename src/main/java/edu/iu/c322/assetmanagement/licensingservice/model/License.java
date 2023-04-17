@@ -9,10 +9,7 @@ public class License {
     private int id;
     private String description;
 
-    private String organizationId;
-
-    private String productName;
-
+    private int organizationId;
     private String licenseType;
 
     private String comment;
@@ -41,20 +38,12 @@ public class License {
         this.description = description;
     }
 
-    public String getOrganizationId() {
+    public int getOrganizationId() {
         return organizationId;
     }
 
-    public void setOrganizationId(String organizationId) {
+    public void setOrganizationId(int organizationId) {
         this.organizationId = organizationId;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(String productName) {
-        this.productName = productName;
     }
 
     public String getLicenseType() {
