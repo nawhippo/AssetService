@@ -22,6 +22,13 @@ public class License {
     @Transient
     private String contactEmail;
 
+    public void setOrganization(Organization organization){
+        setOrganizationName(organization.name());
+        setContactName(organization.contactName());
+        setContactPhone(organization.contactPhone());
+        setContactEmail(organization.contactEmail());
+    }
+
     public int getId() {
         return id;
     }
