@@ -1,9 +1,9 @@
 package edu.iu.c322.assetmanagement.licensingservice.controller;
 
+import edu.iu.c322.assetmanagement.licensingservice.client.LicenseClient;
 import edu.iu.c322.assetmanagement.licensingservice.client.OrganizationClient;
-import edu.iu.c322.assetmanagement.licensingservice.model.License;
-import edu.iu.c322.assetmanagement.licensingservice.model.Organization;
-import edu.iu.c322.assetmanagement.licensingservice.repository.LicenseRepository;
+import edu.iu.c322.assetmanagement.licensingservice.model.Asset;
+import edu.iu.c322.assetmanagement.licensingservice.repository.AssetRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,36 +12,36 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/licensings")
-public class LicensingController {
-    private LicenseRepository repository;
+public class AssetController {
+    private AssetRepository repository;
 
-    private OrganizationClient organizationClient;
+    private LicenseClient licenseClient;
 
-    public LicensingController(LicenseRepository repository, OrganizationClient organizationClient) {
+    public AssetController(AssetRepository repository, LicenseClient licenseClient) {
         this.repository = repository;
-        this.organizationClient = organizationClient;
+        this.licenseClient = licenseClient;
     }
 
-    @GetMapping
-    public List<License> getLicensings(){
+    @GetMapping("/assets")
+    public List<Asset> getAssets(){
         return repository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public License getLicensing(@PathVariable int id){
+    @GetMapping("/assets/{id}")
+    public Asset getAsset(@PathVariable int id){
 
-        Optional<License> maybeLicense = repository.findById(id);
-        if(maybeLicense.isPresent()){
-            License license = maybeLicense.get();
-            Optional<Organization> maybeOrganization = organizationClient
-                    .getOrganization(license.getOrganizationId());
-            if(maybeOrganization.isPresent()){
-                Organization organization = maybeOrganization.get();
-                license.setOrganization(organization);
-                return license;
+        Optional<Asset> maybeAsset = repository.findById(id);
+        if(maybeAsset.isPresent()){
+            Asset asset = maybeAsset.get();
+            Optional<License> maybeLicense = licenseClient
+                    .getLicense(asset.getLicenseId());
+            if(maybeAsset.isPresent()){
+                License license = maybeLicense.get();
+                asset.setLicense(license);
+                return asset;
             }
         } else {
-            throw new IllegalStateException("licensing id is invalid.");
+            throw new IllegalStateException("Asset id is invalid.");
         }
         return null;
     }
@@ -49,10 +49,10 @@ public class LicensingController {
 
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public int create(@RequestBody License license){
-        License addedLicense = repository.save(license);
-        return addedLicense.getId();
+    @PostMapping("/assets")
+    public int create(@RequestBody Asset asset){
+        Asset addedAsset = repository.save(asset);
+        return addedAsset.getId();
     }
 
 }

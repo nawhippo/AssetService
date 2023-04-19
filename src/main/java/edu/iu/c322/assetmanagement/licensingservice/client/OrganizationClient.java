@@ -9,19 +9,19 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Optional;
 
 @Component
-public class OrganizationClient {
+public class LicenseClient {
     private RestTemplate restTemplate;
 
-    public OrganizationClient(RestTemplate restTemplate) {
+    public LicenseClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
-    public Optional<Organization> getOrganization(int organizationId){
+    public Optional<License> getLicense(int licenseId){
         ResponseEntity<Organization> restExchange =
                 restTemplate.exchange(
-                        "http://organization-service/organizations/{organizationId}",
+                        "http://organization-service/Licensing/{LicenseId}",
                         HttpMethod.GET,
-                        null, Organization.class, organizationId);
+                        null, License.class, licenseId);
 
         return Optional.ofNullable(restExchange.getBody());
     }
