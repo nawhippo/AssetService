@@ -10,7 +10,7 @@ public class GreetingsController {
 
     @GetMapping
     public String greetings() {
-        return "Greetings from the licensing service!";
+        return "Greetings from the asset service!";
     }
 
 }
